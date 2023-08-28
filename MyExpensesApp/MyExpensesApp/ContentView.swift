@@ -10,34 +10,41 @@ import SwiftUI
 
 
 struct ContentView: View {
-    @State private var stan_konta = 0.0
-    @State private var wydatki = 0.0
-    @State private var wplywy = 0.0
+    @State private var bankBalance = 0.0
+    @State private var sumOfExpenses = 0.0
+    @State private var sumOfProceeds = 0.0
+    
+    @State private var showingAddExpense = false
+    
+    //arr with expenses
+    @StateObject private var expensesData = ExpensesData()
     var body: some View {
         NavigationView {
             
             VStack{
                 Spacer()
-                HStack(spacing: 20) {
+                HStack(spacing: 10) {
                     
-                    Text("Stan Konta\n\(stan_konta.formatted(.number)) zł")
+                    Text("Bank balance\n\(bankBalance.formatted(.number)) zł")
                         .multilineTextAlignment(.center)
-                        .frame(width: 100, height: 50)
+                        .frame(width: 120, height: 50)
                         .background(.green).opacity(0.8)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                     
-                    Text("Wydatki\n\(wydatki.formatted(.number)) zł")
+                    Text("Expenses\n\(sumOfExpenses.formatted(.number)) zł")
                         .multilineTextAlignment(.center)
-                        .frame(width: 100, height: 50)
+                        .frame(width: 120, height: 50)
                         .background(.red).opacity(0.8)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                     
-                    Text("Wpływy\n\(wplywy.formatted(.number)) zł")
+                    Text("Proceeds\n\(sumOfProceeds.formatted(.number)) zł")
                         .multilineTextAlignment(.center)
-                        .frame(width: 100, height: 50)
+                        .frame(width: 120, height: 50)
                         .background(.yellow).opacity(0.8)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
+                    
                 }
+                
                 Spacer()
 //                .padding()
                 
@@ -51,24 +58,24 @@ struct ContentView: View {
                 Spacer()
                 
                 Button {
-                    // some code
+                    showingAddExpense = true
                 }label:{
                     
-                    Text("Dodaj wydatek")
+                    Text("Add Expense")
                         .font(.largeTitle)
+                        .bold()
                         .tint(.white)
                         .frame( maxWidth: .infinity, maxHeight: 100, alignment: .center)
                         .background(.red)
-                        
-//                        .clipShape(RoundedRectangle(cornerRadius: 10))
-
                         .ignoresSafeArea()
+                }
+                .sheet(isPresented: $showingAddExpense){
+                    AddExpenseView(expenses: expensesData)
                 }
                 
                 
-                
             }
-            .navigationTitle("MyEspenses")
+            .navigationTitle("MyExpenses")
         }
     }
 }
