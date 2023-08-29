@@ -14,7 +14,7 @@ struct AddExpenseView: View {
     let types = ["Personal","Parties&Friends","Food","Various","Gym","Food"]
     
     @State private var name = ""
-    @State private var type = ""
+    @State private var type = "Personal"
     @State private var describe = ""
     @State private var date = Date.now
     @State private var amount = 0.0

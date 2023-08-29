@@ -14,4 +14,7 @@ struct ExpenseItem: Identifiable, Codable {
     let describe: String
     let date: Date
     let amount: Double
+    var displayInfo: String {
+        "\(name);\(type);\(date.formatted(date: .abbreviated, time: .omitted));\(amount);"
+    }
 }

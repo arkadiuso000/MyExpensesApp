@@ -15,6 +15,7 @@ struct ContentView: View {
     @State private var sumOfProceeds = 0.0
     
     @State private var showingAddExpense = false
+    @State private var showingExpensesHistory = false
     
     //arr with expenses
     @StateObject private var expensesData = ExpensesData()
@@ -25,19 +26,23 @@ struct ContentView: View {
                 Spacer()
                 HStack(spacing: 10) {
                     
-                    Text("Bank balance\n\(bankBalance.formatted(.number)) zł")
+                    Text("Bank balance\n\(bankBalance.formatted(.currency(code: Locale.current.currency?.identifier ?? "PLN")))")
                         .multilineTextAlignment(.center)
                         .frame(width: 120, height: 50)
                         .background(.green).opacity(0.8)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
+                        
                     
-                    Text("Expenses\n\(sumOfExpenses.formatted(.number)) zł")
+                    Text("Expenses\n\(sumOfExpenses.formatted(.currency(code: Locale.current.currency?.identifier ?? "PLN")))")
                         .multilineTextAlignment(.center)
                         .frame(width: 120, height: 50)
                         .background(.red).opacity(0.8)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .onTapGesture {
+                            showingExpensesHistory = true
+                        }
                     
-                    Text("Proceeds\n\(sumOfProceeds.formatted(.number)) zł")
+                    Text("Proceeds\n\(sumOfProceeds.formatted(.currency(code: Locale.current.currency?.identifier ?? "PLN")))")
                         .multilineTextAlignment(.center)
                         .frame(width: 120, height: 50)
                         .background(.yellow).opacity(0.8)
@@ -72,6 +77,9 @@ struct ContentView: View {
                 .sheet(isPresented: $showingAddExpense){
                     AddExpenseView(expenses: expensesData)
                 }
+                .sheet(isPresented: $showingExpensesHistory, content: {
+                    ExpensesHistoryView(expenses: expensesData)
+                })
                 
                 
             }
